@@ -12,10 +12,11 @@ const CenterMain = () => {
     const [state,setState] = useState([]);
     const [loading,setLoading] = useState(true);
     const [vaccine,setVaccine] = useState(0);
+    let arr = new Array();
 
 
     const FetchStateList = async ()=>{
-
+        arr = new Array();
         try{
             const res = await contract.methods.getTotalStates().call();
             const resVaccine = await contract.methods.availableVaccine().call();
@@ -23,7 +24,7 @@ const CenterMain = () => {
             setVaccine(resVaccine);
             setLoading(false);
         }catch(error){
-            console.log(error)
+            console.log(error);
         }
 
     }
@@ -35,10 +36,16 @@ const CenterMain = () => {
         })
 
         contract.events.vaccineCreated().on("data", async (evt)=>{
-            const resVaccine = evt.returnValues._amount;
-            setVaccine(resVaccine);
+            await FetchStateList();
             setOn(false)
         })
+
+        contract.events.vaccineIssued().on("data", async (evt)=>{
+            console.log("vaccine issued ----->",evt);
+            await FetchStateList();
+            setOn(false);
+        })
+        
     }
 
     useEffect(()=>{
@@ -53,7 +60,7 @@ const CenterMain = () => {
             <div className="state-info-container">
                 {loading ? <p className="text-center">Loading</p>
                  : 
-                 Array.isArray(state) && state.map((address,index)=> <StateInfo key={index} address={address} />)}
+                 Array.isArray(state) && state.map((address,index)=> <StateInfo key={index} address={address} arr={arr} />)}
             </div>
             <Overlay on={on} setOn={setOn} type={type} setOn={setOn} />
         </div>

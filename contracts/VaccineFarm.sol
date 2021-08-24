@@ -11,6 +11,9 @@ contract VaccineFarm {
 
   event newStateAdded(address _address);
   event vaccineCreated(uint _amount);
+  event vaccineAddedToQue(uint _amount);
+  event vaccineIssued(address _address, uint _amount);
+  event vaccineConsumed(address _address, uint _amount);
 
   constructor(){
     availableVaccine = 10000;
@@ -26,11 +29,12 @@ contract VaccineFarm {
             return false;
   }
 
-  function addToVaccineIssueQue(address _state, uint _amount) public {
+  function addToVaccineIssueQue(address _state, uint _amount) public returns(uint256) {
     require(ifStateExist(_state),"State not registerd yet");
     (bool success, ) = _state.call(abi.encodeWithSignature("requestForVaccine(uint256)",_amount));
     require(success == true,"Colud not add to issue statement");
     vaccineIssueQue[_state]+= _amount;
+    emit vaccineAddedToQue(vaccineIssueQue[_state]);
   }
 
   function issueVaccine(address _state, uint _amount) public {
@@ -40,7 +44,8 @@ contract VaccineFarm {
     require(availableVaccine >= _amount, "Vaccine out of stock !");
     vaccineIssueQue[_state] -= _amount;
     vaccineIssuedList[_state] += _amount;
-    emit vaccineCreated(availableVaccine);
+    availableVaccine-=_amount;
+    emit vaccineIssued(_state,_amount);
   }
 
   function registerNewState(string memory password, string memory _name) public returns(address) {
@@ -68,11 +73,27 @@ contract VaccineFarm {
     availableVaccine+=_amount;
     emit vaccineCreated(availableVaccine);
     return availableVaccine;
-
   }
 
   function totalVaccineIssued(address _state) public view returns(uint){
     return vaccineIssuedList[_state];
+  }
+
+  function authenticationForState(address _address, string memory _password) public returns(bool){
+    (bool success, bytes memory result ) = _address.call(abi.encodeWithSignature("authenticate(string)", _password));
+    return abi.decode(result,(bool));
+  }
+
+  function fullDetailsForState(address _address, string memory _password) public returns(string memory, uint256, uint256){
+    (bool success, bytes memory result) = _address.call(abi.encodeWithSignature("getStateFullInfo(string)",_password));
+    return abi.decode(result,(string,uint256,uint256));
+  }
+
+  function consumeVaccine(address _address, uint _amount, string memory _password) public {
+    (bool success, ) = _address.call(abi.encodeWithSignature("consumeVaccine(uint256,string)",_amount,_password));
+    require(success,"Something wen't wrong");
+    emit vaccineConsumed(_address,_amount);
+
   }
 
 }

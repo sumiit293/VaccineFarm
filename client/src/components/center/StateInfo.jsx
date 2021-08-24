@@ -3,7 +3,7 @@ import ContractContext from './../../context/contract/ContractContext';
 
 const StateInfo = (props) => {
 
-    const {address} = props;
+    const {address, arr} = props;
     const {contract} = useContext(ContractContext);
     const [info,setInfo] = useState({name: "", token: 0, loading: true});
 
@@ -30,7 +30,8 @@ const StateInfo = (props) => {
 
     useEffect(()=>{
         !!contract && FetchStateInfo();
-    },[contract,address]);
+        console.log("Called form state info...");
+    },[contract,address,arr]);
 
     return (
         <Fragment>
