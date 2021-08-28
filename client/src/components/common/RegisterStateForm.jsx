@@ -1,5 +1,7 @@
 import React, { useContext , useState} from 'react';
+import { toast } from 'react-toastify';
 import ContractContext from './../../context/contract/ContractContext';
+
 
 const RegisterStateForm = () => {
 
@@ -18,6 +20,11 @@ const RegisterStateForm = () => {
     const createState = async ()=> {
         setDisabled(true);
         try {
+
+            // check if all fileds are provided
+            if (!state_name || !state_password){
+                toast("Both fields are required !");
+            }
         const res = await contract.methods.registerNewState(state_password,state_name).send({from: accounts[0]});
             setCred({
                 state_name: "",

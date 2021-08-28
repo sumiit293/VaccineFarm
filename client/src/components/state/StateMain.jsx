@@ -1,5 +1,4 @@
-import React,{ useContext, useState } from 'react';
-import { useEffect } from 'react';
+import React,{ useContext, useState, useEffect } from 'react';
 import ContractContext from './../../context/contract/ContractContext';
 import StateAction from './StateAction';
 import StateLogin from './StateLogin';
@@ -7,15 +6,14 @@ import StateLogin from './StateLogin';
 const StateMain = () => {
 
     const {contract} = useContext(ContractContext);
-    const [loading,setLoading] = useState(false);
+    const [loading,setLoading] = useState(true);
     const [loggedIn,setLoggedIn] = useState(false);
     const [cred,setCred] = useState({address: "", password: ""});
 
 
 
     const checkIfCredInLocalStrorage = async ()=>{
-        setLoading(true);
-        try {
+                try {
             const adrs = await localStorage.getItem("address");
             const psd = await localStorage.getItem("password");
 
