@@ -9,11 +9,6 @@ import StateMain from "./components/state/StateMain";
 import ContractState from './context/contract/ContractState';
 
 class App extends Component {
-
-  componentDidMount = ()=>{
-    toast("Wow so easy!");
-  }
-
   render() {
     return (
       <ContractState>
