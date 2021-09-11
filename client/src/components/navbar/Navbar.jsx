@@ -5,10 +5,8 @@ import ContractContext from './../../context/contract/ContractContext';
 
 const Navbar = () => {
 
-    const { addContractToState } = useContext(ContractContext);
-
+    const { addContractToState, accounts: ac } = useContext(ContractContext);
     const setStatesForWeb3 = async ()=>{
-
         try {
             // Get network provider and web3 instance.
             const web3 = await getWeb3();
@@ -38,8 +36,9 @@ const Navbar = () => {
     },[]);
 
     return (
-        <div className="text-center bg-blue p-10">
-            Hello there !
+        <div className="d-flex bg-blue p-10">
+            <div>Vaccine Farm</div>
+            <div>Account: {!!ac ? ac: "Loading..."}</div>
         </div>
     )
 }

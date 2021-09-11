@@ -14,13 +14,12 @@ class App extends Component {
       <ContractState>
         <Router>
               <Fragment>
-                <ToastContainer/>
+                <ToastContainer />
                  <Navbar />
                   <Switch>
                     <Route exact path="/" component={CenterMain} />
                     <Route exact path="/state" component={StateMain} />
                   </Switch>
-                  
               </Fragment>
         </Router>
       </ContractState>
