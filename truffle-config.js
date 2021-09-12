@@ -10,11 +10,12 @@ module.exports = {
     develop: {
       port: 8545
     },
-    ropsten: {
-      provider: function() {
-        return new HDWalletProvider(key.mnemonic, "https://ropsten.infura.io/v3/f0be3b9145b04371b59b514a59fde412")
-      },
-      network_id: 3
+    rinkeby: {
+      provider: () => new HDWalletProvider(key.mnemonics,"https://rinkeby.infura.io/v3/f0be3b9145b04371b59b514a59fde412",0),
+      network_id: 4,
+      gas: 4612388,
+      path:"m/44'/60'/0'/0/0"
+      // Gas limit used for deploys
     }
   },
   compilers: {
