@@ -4,7 +4,7 @@ import ContractContext from './../../context/contract/ContractContext';
 import BasicFunc from './BasicFunc';
 import StateInfo from './StateInfo';
 
-const CenterMain = () => {
+const CenterMain = (props) => {
 
     const { contract } = useContext(ContractContext);
     const [on,setOn] = useState(false);
@@ -13,6 +13,11 @@ const CenterMain = () => {
     const [loading,setLoading] = useState(true);
     const [vaccine,setVaccine] = useState(0);
     let arr = new Array();
+
+    function handleClick() {
+        props.history.push("/state");
+      }
+    
 
 
     const FetchStateList = async ()=>{
@@ -62,6 +67,9 @@ const CenterMain = () => {
                  : 
                  Array.isArray(state) && state.map((address,index)=> <StateInfo key={index} address={address} arr={arr} />)}
             </div>
+            <center>
+                <p onClick={handleClick} className="text-center cursor"><u>Move to state section</u></p>
+            </center>
             <Overlay on={on} setOn={setOn} type={type} setOn={setOn} />
         </div>
     )

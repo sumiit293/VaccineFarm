@@ -2,6 +2,14 @@
  text-align: center;
 }
 
+.cursor{
+  cursor: pointer;
+}
+
+.text-dark{
+  color: grey;
+}
+
 .func-wrapper{
   max-width: 700px;
   margin: 20px auto;

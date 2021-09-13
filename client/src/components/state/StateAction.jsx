@@ -1,5 +1,6 @@
 import React, { Fragment, useRef, useEffect, useContext, useState } from 'react';
 import ContractContext from './../../context/contract/ContractContext';
+import { useHistory } from 'react-router';
 
 const StateAction = (props) => {
 
@@ -10,6 +11,7 @@ const StateAction = (props) => {
     const [loading,setLoading] = useState(true);
     const [amount,setAmount] = useState(0);
     const [amount1,setAmount1] = useState(0);
+    const history = useHistory();
 
     const [stateInfo,setStateInfo] = useState({
         name: "",
@@ -75,6 +77,17 @@ const StateAction = (props) => {
                 console.log(error);
             }
         });
+    }
+
+    const handleBack = async ()=>{
+        history.push("/");
+    }
+
+    const handleLogout =  async ()=> {
+        await localStorage.removeItem("address");
+        await localStorage.removeItem("password");
+        await localStorage.setItem("loggedIn",false);
+        history.push("/");
     }
         
     useEffect(()=>{
@@ -153,6 +166,11 @@ const StateAction = (props) => {
                         Collapse
                     </div>
                 </div>
+                
+            </div>
+            <div className="d-flex center-container">
+                    <div><u className="cursor" onClick={handleBack}>Back</u></div>
+                    <div><u className="cursor" onClick={handleLogout}>Logout</u></div>
             </div>
         </Fragment>
     )

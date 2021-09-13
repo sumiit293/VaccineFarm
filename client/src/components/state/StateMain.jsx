@@ -3,17 +3,15 @@ import ContractContext from './../../context/contract/ContractContext';
 import StateAction from './StateAction';
 import StateLogin from './StateLogin';
 
-const StateMain = () => {
+const StateMain = (props) => {
 
     const {contract} = useContext(ContractContext);
     const [loading,setLoading] = useState(true);
     const [loggedIn,setLoggedIn] = useState(false);
     const [cred,setCred] = useState({address: "", password: ""});
 
-
-
     const checkIfCredInLocalStrorage = async ()=>{
-                try {
+        try {
             const adrs = await localStorage.getItem("address");
             const psd = await localStorage.getItem("password");
 
